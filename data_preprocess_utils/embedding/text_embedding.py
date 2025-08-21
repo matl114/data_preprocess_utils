@@ -1,6 +1,7 @@
 from ..core.models import AbstractAIModel, EmbeddingInvocation, ModelType
 # from langchain_community.llms.ollama import Ollama
 from langchain_ollama import OllamaEmbeddings
+from typing import *
 
 class OllamaEmbeddingModel(AbstractAIModel):
     model_type : ModelType = ModelType.TEXT_EMBEDDING
@@ -22,3 +23,15 @@ class CachedEmbeddingInvocation(EmbeddingInvocation):
             for key, val in zip(texts_not_in_cache, result):
                 self.cache_map[key] = val
         return [self.cache_map.get(tl) for tl in texts]
+    
+class ImmutableEmbeddingInvocation(EmbeddingInvocation):
+    cache_map : dict[str, list[float]]
+    def invoke_embedding(self, texts: list[str]) -> list[list[float]]:
+        lst = []
+        for txt in texts:
+            if txt in self.cache_map.keys():
+                lst.append(txt)
+            else:
+                # Abort 
+                raise KeyError(f"\"{txt}\" not in the cache map")
+        return lst 

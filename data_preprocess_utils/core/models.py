@@ -21,7 +21,7 @@ class AbstractAIModel(BaseModel):
         raise NotImplementedError("abstract")
     
 class AbstractModelInvocation(BaseModel):
-    model_instance : AbstractAIModel = Field(description= "Model invocation")
+    model_instance : Optional[AbstractAIModel] = Field(description= "Model invocation")
     
 class EmbeddingInvocation(AbstractModelInvocation):
     def invoke_embedding(self, texts: list[str]) -> list[list[float]]:
