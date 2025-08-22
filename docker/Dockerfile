@@ -3,7 +3,6 @@ FROM python-base:v1
 ENV TZ=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-# 软连接python-> python3
 RUN ln -s /usr/local/bin/python3 /usr/local/bin/python
 
 RUN mkdir -p /root/workspace 
